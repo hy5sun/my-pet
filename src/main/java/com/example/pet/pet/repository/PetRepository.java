@@ -11,5 +11,5 @@ import java.util.UUID;
 
 public interface PetRepository extends JpaRepository<Pet, UUID> {
     Optional<List<Pet>> findAllByMember(Member member);
-    Optional<Pet> findByIdAndMember(UUID id, Member member);
+    Optional<Pet> findById(UUID id);
 }

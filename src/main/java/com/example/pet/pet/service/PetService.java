@@ -55,25 +55,34 @@ public class PetService {
 
     @Transactional
     public DetailPetResponse findById(UUID id, Member member) {
-        Pet pet = findByIdAndMember(id, member);
+        Pet pet = findById(id);
+        validateOwner(pet, member);
         return DetailPetResponse.toDto(pet);
     }
 
     @Transactional
     public DetailPetResponse update(UUID id, Member member, UpdatePetRequest req) {
-        Pet pet = findByIdAndMember(id, member);
+        Pet pet = findById(id);
+        validateOwner(pet, member);
         pet.update(req.getName(), req.getSpecies(), req.getAge(), req.getGender());
         return DetailPetResponse.toDto(pet);
     }
 
-    private Pet findByIdAndMember(UUID id, Member member) {
-        return petRepository.findByIdAndMember(id, member)
+    @Transactional
+    public void delete(UUID id, Member member) {
+        Pet pet = findById(id);
+        validateOwner(pet, member);
+        petRepository.delete(pet);
+    }
+
+    private Pet findById(UUID id) {
+        return petRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(PET_NOT_FOUND));
     }
 
-    @Transactional
-    public void delete(UUID id, Member member) {
-        Pet pet = findByIdAndMember(id, member);
-        petRepository.delete(pet);
+    private void validateOwner(Pet pet, Member member) {
+        if (!member.equals(pet.getMember())) {
+            throw new BusinessException(UNAUTHORIZED_MEMBER);
+        }
     }
 }
