@@ -59,7 +59,8 @@ public class TokenProvider {
 
     public UUID getMemberId(String token){
         Claims claims = getClaims(token);
-        return claims.get("id", UUID.class);
+        String id =  claims.get("id", String.class);
+        return UUID.fromString(id);
     }
 
     private Claims getClaims(String token) {
