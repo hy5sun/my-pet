@@ -70,4 +70,10 @@ public class PetService {
         return petRepository.findByIdAndMember(id, member)
                 .orElseThrow(() -> new BusinessException(PET_NOT_FOUND));
     }
+
+    @Transactional
+    public void delete(UUID id, Member member) {
+        Pet pet = findByIdAndMember(id, member);
+        petRepository.delete(pet);
+    }
 }

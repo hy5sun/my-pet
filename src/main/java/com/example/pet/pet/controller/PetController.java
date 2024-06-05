@@ -51,4 +51,11 @@ public class PetController {
         return CustomResponse.response(HttpStatus.OK, "동물 정보를 정상적으로 수정했습니다.", pet);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse deletePet(@PathVariable("id") UUID petId, @Login Member member) {
+        petService.delete(petId, member);
+        return CustomResponse.response(HttpStatus.OK, "동물 정보를 정상적으로 삭제했습니다.");
+    }
+
 }
