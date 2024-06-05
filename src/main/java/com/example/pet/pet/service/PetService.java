@@ -3,12 +3,14 @@ package com.example.pet.pet.service;
 import com.example.pet.common.type.GenderType;
 import com.example.pet.member.domain.Member;
 import com.example.pet.pet.domain.Pet;
-import com.example.pet.pet.dto.CreatePetRequest;
-import com.example.pet.pet.dto.DetailPetResponse;
+import com.example.pet.pet.dto.*;
 import com.example.pet.pet.repository.PetRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -36,5 +38,14 @@ public class PetService {
 
     private GenderType validateGender(String gender) {
         return GenderType.fromGenderType(gender);
+    }
+
+    @Transactional
+    public List<AllPetsResponse> findAllByMember(Member member) {
+        List<Pet> pets =  petRepository.findAllByMember(member)
+                .orElse(new ArrayList<>());
+
+        return pets.stream().map(AllPetsResponse::toDto)
+                .toList();
     }
 }
