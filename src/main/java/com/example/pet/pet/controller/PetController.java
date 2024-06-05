@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/pets")
@@ -34,4 +35,12 @@ public class PetController {
         List<AllPetsResponse> pets = petService.findAllByMember(member);
         return CustomResponse.response(HttpStatus.OK, member.getNickname() + "님의 동물을 정상적으로 조회했습니다.", pets);
     }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse findById(@PathVariable("id") UUID petId, @Login Member member) {
+        DetailPetResponse pet = petService.findById(petId, member);
+        return CustomResponse.response(HttpStatus.OK, "동물 상세 조회를 정상적으로 했습니다.", pet);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.pet.pet.service;
 
+import com.example.pet.common.exception.BusinessException;
 import com.example.pet.common.type.GenderType;
 import com.example.pet.member.domain.Member;
 import com.example.pet.pet.domain.Pet;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import static com.example.pet.common.exception.ErrorCode.*;
 
 
 @Service
@@ -47,5 +51,13 @@ public class PetService {
 
         return pets.stream().map(AllPetsResponse::toDto)
                 .toList();
+    }
+
+    @Transactional
+    public DetailPetResponse findById(UUID id, Member member) {
+        Pet pet = petRepository.findByIdAndMember(id, member)
+                .orElseThrow(() -> new BusinessException(PET_NOT_FOUND));
+
+        return DetailPetResponse.toDto(pet);
     }
 }
