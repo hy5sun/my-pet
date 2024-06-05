@@ -3,6 +3,7 @@ package com.example.pet.common.exception.advice;
 import com.example.pet.common.exception.BusinessException;
 import com.example.pet.common.exception.ErrorCode;
 import com.example.pet.common.exception.ErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -71,6 +72,16 @@ public class ExceptionControllerAdvice {
         log.error("handleAccessDeniedException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.ACCESS_DENIED);
         return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    /**
+     * 토큰이 만료된 경우 발생
+     */
+    @ExceptionHandler(ExpiredJwtException.class)
+    protected ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException e) {
+        log.error("handleExpiredJwtException", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.EXPIRED_TOKEN);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     /**
