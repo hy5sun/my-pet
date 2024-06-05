@@ -43,4 +43,11 @@ public class Pet extends BaseTimeEntity {
         this.gender = gender;
         this.member = member;
     }
+
+    public void update(String name, String species, Integer age, String gender) {
+        this.name = name;
+        this.species = species;
+        this.age = age;
+        this.gender = gender;
+    }
 }

@@ -55,9 +55,19 @@ public class PetService {
 
     @Transactional
     public DetailPetResponse findById(UUID id, Member member) {
-        Pet pet = petRepository.findByIdAndMember(id, member)
-                .orElseThrow(() -> new BusinessException(PET_NOT_FOUND));
-
+        Pet pet = findByIdAndMember(id, member);
         return DetailPetResponse.toDto(pet);
+    }
+
+    @Transactional
+    public DetailPetResponse update(UUID id, Member member, UpdatePetRequest req) {
+        Pet pet = findByIdAndMember(id, member);
+        pet.update(req.getName(), req.getSpecies(), req.getAge(), req.getGender());
+        return DetailPetResponse.toDto(pet);
+    }
+
+    private Pet findByIdAndMember(UUID id, Member member) {
+        return petRepository.findByIdAndMember(id, member)
+                .orElseThrow(() -> new BusinessException(PET_NOT_FOUND));
     }
 }
