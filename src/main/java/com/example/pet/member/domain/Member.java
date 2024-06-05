@@ -1,6 +1,7 @@
 package com.example.pet.member.domain;
 
 import com.example.pet.common.domain.BaseTimeEntity;
+import com.example.pet.pet.domain.Pet;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -31,6 +32,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "member")
+    private List<Pet> pets;
 
     @Builder
     public Member(String email, String nickname, String password) {

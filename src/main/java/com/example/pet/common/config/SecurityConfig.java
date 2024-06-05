@@ -35,7 +35,9 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers(
                                 new AntPathRequestMatcher("/auth/join"),
-                                new AntPathRequestMatcher("/auth/login")
+                                new AntPathRequestMatcher("/auth/login"),
+                                new AntPathRequestMatcher("/pets"),
+                                new AntPathRequestMatcher("/pets/*")
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
