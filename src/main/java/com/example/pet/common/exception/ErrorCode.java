@@ -13,8 +13,8 @@ public enum ErrorCode {
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST.value(), "Bad Request", "올바르지 않은 입력값입니다."),
     // 잘못된 비밀번호 입력 오류
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST.value(), "Bad Request", "비밀번호가 일치하지 않습니다."),
-    // 검색 Type에 속하지 않는 오류
-    WRONG_SEARCH_TYPE(HttpStatus.BAD_REQUEST.value(), "Bad Request", "검색 타입은 TITLE, CONTENT만 가능합니다."),
+    // 상품 카테고리 Type에 속하지 않는 오류
+    WRONG_CATEGORY_TYPE(HttpStatus.BAD_REQUEST.value(), "Bad Request", "상품 카테고리에 해당하지 않습니다."),
     // 성별 Type에 속하지 않는 오류
     WRONG_GENDER_TYPE(HttpStatus.BAD_REQUEST.value(), "Bad Request", "성별 타입은 FEMALE과 MALE만 가능합니다."),
 
