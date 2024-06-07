@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.example.pet.common.exception.ErrorCode.FILE_UPLOAD_FAILED;
+import static com.example.pet.common.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class S3Service {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    public String uploadFile(Image image, MultipartFile file, UUID boardId) throws IOException {
+    public String uploadFile(Image image, MultipartFile file, String boardId) throws IOException {
         try {
             String folderDir = bucket + "/" + boardId;
             String savedFilename = image.getSaveName();
