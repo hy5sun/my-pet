@@ -155,6 +155,32 @@ public class BoardService {
         likedBoardRepository.delete(likedBoard);
     }
 
+    private List<String> getExistingFileName(UUID id) {
+        List<Image> images = getFilesFromDB(id);
+
+        return images.stream().map(image -> image.getSaveName()).toList();
+    }
+
+    private List<Image> getFilesFromDB(UUID id) {
+        return imageRepository.findAllByBoard_Id(id)
+                .orElseThrow(() -> new BusinessException(IMAGE_NOT_FOUND));
+    }
+
+    private void deleteFromDB(UUID id) {
+        List<Image> images = getFilesFromDB(id);
+        imageRepository.deleteAll(images);
+    }
+
+    private void deleteFile(UUID id, List<String> fileNames) {
+        fileNames.forEach(fileName -> {s3Service.fileDelete(id, fileName);});
+        deleteFromDB(id);
+    }
+
+    private void deleteExistingFile(UUID id) {
+        List<String> fileNames = getExistingFileName(id);
+        deleteFile(id, fileNames);
+    }
+
     private Boolean isLiked(Board board, Member member) {
         return likedBoardRepository.findByBoardAndMember(board, member)
                 .isPresent();
