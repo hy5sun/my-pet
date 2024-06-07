@@ -45,28 +45,32 @@ public class BoardService {
             files = new ArrayList<>();
         }
 
+        validateFileSize(files);
+
         List<Image> images = makeImage(files);
 
         Board board = Board.builder()
                 .title(req.getTitle())
                 .content(req.getContent())
+                .isPetHelp(req.getIsPetHelp())
                 .images(images)
                 .member(member)
                 .build();
 
-        uploadFile(images, files, board);
-
         boardRepository.save(board);
+
+        uploadFile(images, files, board);
         imageRepository.saveAll(images);
 
         return DetailBoardResponse.toDto(board);
     }
 
     private void uploadFile(List<Image> images, List<MultipartFile> files, Board board) throws IOException {
+        String boardId = board.getId().toString();
         IntStream.range(0, files.size()).forEach(fileIndex -> {
                     try {
                         Image image = images.get(fileIndex);
-                        String filePath = s3Service.uploadFile(image, files.get(fileIndex), board.getId());
+                        String filePath = s3Service.uploadFile(image, files.get(fileIndex), boardId);
                         image.setImageUrl(filePath);
                         image.setBoard(board);
                     } catch (IOException e) {
@@ -110,6 +114,12 @@ public class BoardService {
     public DetailBoardResponse findById(UUID id, Member member) {
         Board board = getById(id);
         return DetailBoardResponse.toDto(board);
+    }
+
+    private void validateFileSize(List<MultipartFile> files) {
+        if (files.size() > 3) {
+            throw new BusinessException(TOO_MANY_FILES);
+        }
     }
 
     @Transactional

@@ -19,6 +19,8 @@ public enum ErrorCode {
     WRONG_GENDER_TYPE(HttpStatus.BAD_REQUEST.value(), "Bad Request", "성별 타입은 FEMALE과 MALE만 가능합니다."),
     // 파일을 업로드 할 수 없을 때 오류
     FILE_UPLOAD_FAILED(HttpStatus.BAD_REQUEST.value(), "Bad Request", "파일을 업로드 하는 데 실패했습니다."),
+    // 파일 개수가 특정 개수를 초과했을 경우
+    TOO_MANY_FILES(HttpStatus.BAD_REQUEST.value(), "Bad Request", "올릴 수 있는 최대 파일 수는 3개입니다."),
 
     // 만료된 토큰 오류
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), "Unauthorized", "유효하지 않은 토큰입니다."),
@@ -37,6 +39,8 @@ public enum ErrorCode {
     LIKED_BOARD_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Not Found", "해당 게시물에 좋아요를 누르지 않았습니다."),
     // 동물을 찾을 수 없는 오류
     PET_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Not Found", "존재하지 않는 동물 정보입니다."),
+    // 이미지를 찾을 수 없는 오류
+    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Not Found", "존재하지 않는 이미지입니다."),
 
     // 닉네임 중복 오류
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT.value(), "Conflict", "이미 존재하는 닉네임입니다."),
