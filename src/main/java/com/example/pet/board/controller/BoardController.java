@@ -1,5 +1,6 @@
 package com.example.pet.board.controller;
 
+import com.example.pet.board.dto.BoardsWithPaginationResponse;
 import com.example.pet.board.dto.CreateBoardRequest;
 import com.example.pet.board.dto.DetailBoardResponse;
 import com.example.pet.board.service.BoardService;
@@ -30,5 +31,13 @@ public class BoardController {
         log.info("헤헤" + req.getIsPetHelp());
         DetailBoardResponse board = boardService.createBoard(member, req, files);
         return CustomResponse.response(HttpStatus.CREATED, "게시물을 정상적으로 작성했습니다.", board);
+    }
+
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse findAll(@Login Member member, @RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        BoardsWithPaginationResponse boards = boardService.findAll(page, size);
+
+        return CustomResponse.response(HttpStatus.OK, "모든 게시물을 정상적으로 조회했습니다.", boards);
     }
 }

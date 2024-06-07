@@ -10,6 +10,10 @@ import com.example.pet.file.S3Service;
 import com.example.pet.member.domain.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,5 +70,30 @@ public class BoardService {
                         throw new BusinessException(FILE_UPLOAD_FAILED);
                     }
                 });
+    }
+
+    @Transactional
+    public BoardsWithPaginationResponse findAll(Integer page, Integer size) {
+        Pageable pageable = makePageable(page, size);
+        Page<Board> boards = findAllWithPageable(pageable);
+        return makeAllBoardsResponse(boards);
+    }
+
+    private Pageable makePageable(Integer page, Integer size) {
+        return PageRequest.of(page, size, Sort.by("createdAt").descending());
+    }
+
+    private Page<Board> findAllWithPageable(Pageable pageable) {
+        return boardRepository.findAll(pageable);
+    }
+
+    private BoardsWithPaginationResponse makeAllBoardsResponse(Page<Board> boards) {
+        PaginationDto pageInfo = PaginationDto.toDto(boards);
+
+        List<AllBoardsDto> boardsResponse = boards.stream()
+                .map(AllBoardsDto::fromEntity)
+                .toList();
+
+        return new BoardsWithPaginationResponse(boardsResponse, pageInfo);
     }
 }
