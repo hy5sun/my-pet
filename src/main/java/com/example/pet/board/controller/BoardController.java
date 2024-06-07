@@ -48,6 +48,14 @@ public class BoardController {
         return CustomResponse.response(HttpStatus.OK, "게시물을 정상적으로 조회했습니다.", board);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse editBoard(@PathVariable("id") UUID boardId, @Validated @RequestPart("board") UpdateBoardRequest req, @RequestPart(value = "files", required = false) List<MultipartFile> files, @Login Member member) throws IOException {
+        DetailBoardResponse board = boardService.editBoard(boardId, req, files, member);
+
+        return CustomResponse.response(HttpStatus.OK, "게시물을 정상적으로 수정했습니다.", board);
+    }
+
     @PostMapping("/{id}/like")
     @ResponseStatus(HttpStatus.OK)
     public CustomResponse increaseLike(@PathVariable("id") UUID boardId, @Login Member member) {

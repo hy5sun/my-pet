@@ -116,6 +116,28 @@ public class BoardService {
         return DetailBoardResponse.toDto(board);
     }
 
+    @Transactional
+    public DetailBoardResponse editBoard(UUID id, UpdateBoardRequest req, List<MultipartFile> files, Member member) throws IOException {
+        if (files == null) {
+            files = new ArrayList<>();
+        }
+
+        validateFileSize(files);
+
+        Board board = getById(id);
+        validateAuthor(board, member);
+
+        deleteExistingFile(id);
+
+        List<Image> images = makeImage(files);
+        uploadFile(images, files, board);
+
+        imageRepository.saveAll(images);
+        board.update(req.getTitle(), req.getContent(), req.getIsPetHelp(), images);
+        return DetailBoardResponse.toDto(board);
+    }
+
+
     private void validateFileSize(List<MultipartFile> files) {
         if (files.size() > 3) {
             throw new BusinessException(TOO_MANY_FILES);

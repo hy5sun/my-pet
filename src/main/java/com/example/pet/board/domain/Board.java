@@ -54,6 +54,13 @@ public class Board extends BaseTimeEntity {
         this.isPetHelp = isPetHelp;
     }
 
+    public void update(String title, String content, Boolean isPetHelp, List<Image> images) {
+        this.title = title;
+        this.content = content;
+        this.images = images;
+        this.isPetHelp = isPetHelp;
+    }
+
     public void increaseLikeCount() {
         this.likeCount++;
     }
