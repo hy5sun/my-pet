@@ -41,6 +41,8 @@ public enum ErrorCode {
     PET_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Not Found", "존재하지 않는 동물 정보입니다."),
     // 이미지를 찾을 수 없는 오류
     IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Not Found", "존재하지 않는 이미지입니다."),
+    // 댓글을 찾을 수 없는 오류
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Not Found", "댓글을 찾을 수 없습니다."),
 
     // 닉네임 중복 오류
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT.value(), "Conflict", "이미 존재하는 닉네임입니다."),

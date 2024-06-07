@@ -12,6 +12,7 @@ public class AllBoardsDto {
     private String content;
     private String thumbnail;
     private Integer likeCount;
+    private Integer commentCount;
     private String writer;
     private Boolean isPetHelp;
 
@@ -24,6 +25,7 @@ public class AllBoardsDto {
                 board.getContent(),
                 thumbnail,
                 board.getLikeCount(),
+                board.getComments().size(),
                 board.getMember().getNickname(),
                 board.getIsPetHelp()
         );

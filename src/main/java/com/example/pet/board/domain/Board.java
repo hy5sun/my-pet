@@ -1,5 +1,6 @@
 package com.example.pet.board.domain;
 
+import com.example.pet.comment.domain.Comment;
 import com.example.pet.common.domain.BaseTimeEntity;
 import com.example.pet.member.domain.Member;
 import jakarta.persistence.*;
@@ -43,6 +44,9 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "board")
     private List<LikedBoard> likedBoards;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
     @Builder
     public Board(String title, String content, Boolean isPetHelp, Member member, List<Image> images) {
