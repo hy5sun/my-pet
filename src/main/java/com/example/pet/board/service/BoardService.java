@@ -10,6 +10,7 @@ import com.example.pet.file.S3Service;
 import com.example.pet.member.domain.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import static com.example.pet.common.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
     private final BoardRepository boardRepository;
     private final S3Service s3Service;
@@ -40,9 +42,7 @@ public class BoardService {
             files = new ArrayList<>();
         }
 
-        List<Image> images = files.stream()
-                .map(image -> Image.builder().originalName(image.getOriginalFilename()).build())
-                .collect(Collectors.toList());
+        List<Image> images = makeImage(files);
 
         Board board = Board.builder()
                 .title(req.getTitle())
@@ -72,6 +72,12 @@ public class BoardService {
                 });
     }
 
+    private List<Image> makeImage(List<MultipartFile> files) {
+        return files.stream()
+                .map(image -> Image.builder().originalName(image.getOriginalFilename()).build())
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public BoardsWithPaginationResponse findAll(Integer page, Integer size) {
         Pageable pageable = makePageable(page, size);
@@ -95,5 +101,16 @@ public class BoardService {
                 .toList();
 
         return new BoardsWithPaginationResponse(boardsResponse, pageInfo);
+    }
+
+    @Transactional
+    public DetailBoardResponse findById(UUID id, Member member) {
+        Board board = getById(id);
+        return DetailBoardResponse.toDto(board);
+    }
+
+    public Board getById(UUID id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(BOARD_NOT_FOUND));
     }
 }

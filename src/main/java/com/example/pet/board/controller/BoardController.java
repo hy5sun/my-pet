@@ -1,8 +1,6 @@
 package com.example.pet.board.controller;
 
-import com.example.pet.board.dto.BoardsWithPaginationResponse;
-import com.example.pet.board.dto.CreateBoardRequest;
-import com.example.pet.board.dto.DetailBoardResponse;
+import com.example.pet.board.dto.*;
 import com.example.pet.board.service.BoardService;
 import com.example.pet.common.annotation.Login;
 import com.example.pet.common.response.CustomResponse;
@@ -16,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/boards")
@@ -39,5 +38,13 @@ public class BoardController {
         BoardsWithPaginationResponse boards = boardService.findAll(page, size);
 
         return CustomResponse.response(HttpStatus.OK, "모든 게시물을 정상적으로 조회했습니다.", boards);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse findById(@PathVariable("id") UUID boardId, @Login Member member) {
+        DetailBoardResponse board = boardService.findById(boardId, member);
+
+        return CustomResponse.response(HttpStatus.OK, "게시물을 정상적으로 조회했습니다.", board);
     }
 }
