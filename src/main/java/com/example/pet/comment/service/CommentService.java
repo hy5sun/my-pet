@@ -5,6 +5,7 @@ import com.example.pet.board.service.BoardService;
 import com.example.pet.comment.domain.Comment;
 import com.example.pet.comment.dto.CommentDto;
 import com.example.pet.comment.dto.CreateCommentRequest;
+import com.example.pet.comment.dto.UpdateCommentRequest;
 import com.example.pet.comment.repository.CommentRepository;
 import com.example.pet.common.exception.BusinessException;
 import com.example.pet.member.domain.Member;
@@ -39,9 +40,24 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public CommentDto editComment(UUID boardId, UUID commentId, UpdateCommentRequest req, Member member) {
+        validateBoardExist(boardId);
+        Comment comment = findById(commentId);
+        validateAuthor(comment, member);
+        comment.update(req.getContent());
+        return CommentDto.toDto(comment);
+    }
+
     public Comment findById(UUID id) {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(COMMENT_NOT_FOUND));
+    }
+
+    private void validateAuthor(Comment comment, Member member) {
+        if (!member.equals(comment.getMember())) {
+            throw new BusinessException(UNAUTHORIZED_MEMBER);
+        }
     }
 
     private void validateBoardExist(UUID boardId) {

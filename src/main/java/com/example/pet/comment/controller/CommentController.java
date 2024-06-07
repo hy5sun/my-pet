@@ -37,4 +37,11 @@ public class CommentController {
         List<CommentDto> comments = commentService.findAllByBoardId(boardId);
         return CustomResponse.response(HttpStatus.OK, "댓글을 정상적으로 조회했습니다.", comments);
     }
+
+    @PutMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse editComment(@PathVariable("boardId") UUID boardId, @PathVariable("commentId") UUID commentId, @Validated @RequestBody UpdateCommentRequest req, @Login Member member) {
+        CommentDto comment = commentService.editComment(boardId, commentId, req, member);
+        return CustomResponse.response(HttpStatus.OK, "댓글을 정상적으로 수정했습니다.", comment);
+    }
 }
