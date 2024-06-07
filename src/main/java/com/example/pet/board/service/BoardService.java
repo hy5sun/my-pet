@@ -2,9 +2,11 @@ package com.example.pet.board.service;
 
 import com.example.pet.board.domain.Board;
 import com.example.pet.board.domain.Image;
+import com.example.pet.board.domain.LikedBoard;
 import com.example.pet.board.dto.*;
 import com.example.pet.board.repository.BoardRepository;
 import com.example.pet.board.repository.ImageRepository;
+import com.example.pet.board.repository.LikedBoardRepository;
 import com.example.pet.common.exception.BusinessException;
 import com.example.pet.file.S3Service;
 import com.example.pet.member.domain.Member;
@@ -33,6 +35,7 @@ import static com.example.pet.common.exception.ErrorCode.*;
 @Slf4j
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final LikedBoardRepository likedBoardRepository;
     private final S3Service s3Service;
     private final ImageRepository imageRepository;
 
@@ -109,8 +112,56 @@ public class BoardService {
         return DetailBoardResponse.toDto(board);
     }
 
+    @Transactional
+    public BoardLikeResponse updateLikeCount(UUID id, Member member) {
+        Board board = getById(id);
+
+        if (isAuthor(board, member)) {
+            throw new BusinessException(BAD_REQUEST);
+        }
+
+        if (!isLiked(board, member)) {
+            increaseLikeCount(board, member);
+        } else {
+            decreaseLikeCount(board, member);
+        }
+
+        return BoardLikeResponse.toDto(board);
+    }
+
+    public void increaseLikeCount(Board board, Member member) {
+        LikedBoard likedBoard = LikedBoard.builder()
+                .board(board)
+                .member(member)
+                .build();
+        likedBoardRepository.save(likedBoard);
+        board.increaseLikeCount();
+    }
+
+    public void decreaseLikeCount(Board board, Member member) {
+        LikedBoard likedBoard = likedBoardRepository.findByBoardAndMember(board, member)
+                .orElseThrow(() -> new BusinessException(LIKED_BOARD_NOT_FOUND));
+        board.decreaseLikeCount();
+        likedBoardRepository.delete(likedBoard);
+    }
+
+    private Boolean isLiked(Board board, Member member) {
+        return likedBoardRepository.findByBoardAndMember(board, member)
+                .isPresent();
+    }
+
     public Board getById(UUID id) {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BOARD_NOT_FOUND));
+    }
+
+    public Boolean isAuthor(Board board, Member member) {
+        return member.equals(board.getMember());
+    }
+
+    public void validateAuthor(Board board, Member member) {
+        if (!isAuthor(board, member)) {
+            throw new BusinessException(UNAUTHORIZED_MEMBER);
+        }
     }
 }

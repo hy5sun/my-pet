@@ -47,4 +47,11 @@ public class BoardController {
 
         return CustomResponse.response(HttpStatus.OK, "게시물을 정상적으로 조회했습니다.", board);
     }
+
+    @PostMapping("/{id}/like")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse increaseLike(@PathVariable("id") UUID boardId, @Login Member member) {
+        BoardLikeResponse likeCount = boardService.updateLikeCount(boardId, member);
+        return CustomResponse.response(HttpStatus.OK, "좋아요를 눌렀습니다.", likeCount);
+    }
 }
