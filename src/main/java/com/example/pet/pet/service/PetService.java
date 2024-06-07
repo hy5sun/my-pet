@@ -2,6 +2,7 @@ package com.example.pet.pet.service;
 
 import com.example.pet.common.exception.BusinessException;
 import com.example.pet.common.type.GenderType;
+import com.example.pet.common.type.SpeciesType;
 import com.example.pet.member.domain.Member;
 import com.example.pet.pet.domain.Pet;
 import com.example.pet.pet.dto.*;
@@ -26,11 +27,12 @@ public class PetService {
     @Transactional
     public DetailPetResponse createPet(Member member, CreatePetRequest req) {
         String gender = validateGender(req.getGender()).toString();
+        String species = validateSpecies(req.getSpecies()).toString();
 
         Pet pet = Pet.builder()
                 .name(req.getName())
                 .age(req.getAge())
-                .species(req.getSpecies())
+                .species(species)
                 .gender(gender)
                 .member(member)
                 .build();
@@ -42,6 +44,10 @@ public class PetService {
 
     private GenderType validateGender(String gender) {
         return GenderType.fromGenderType(gender);
+    }
+
+    private SpeciesType validateSpecies(String species) {
+        return SpeciesType.fromSpeciesType(species);
     }
 
     @Transactional
@@ -62,9 +68,11 @@ public class PetService {
 
     @Transactional
     public DetailPetResponse update(UUID id, Member member, UpdatePetRequest req) {
+        String gender = validateGender(req.getGender()).toString();
+        String species = validateSpecies(req.getSpecies()).toString();
         Pet pet = findById(id);
         validateOwner(pet, member);
-        pet.update(req.getName(), req.getSpecies(), req.getAge(), req.getGender());
+        pet.update(req.getName(), species, req.getAge(), gender);
         return DetailPetResponse.toDto(pet);
     }
 
