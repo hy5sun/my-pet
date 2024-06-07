@@ -17,6 +17,8 @@ public enum ErrorCode {
     WRONG_CATEGORY_TYPE(HttpStatus.BAD_REQUEST.value(), "Bad Request", "상품 카테고리에 해당하지 않습니다."),
     // 성별 Type에 속하지 않는 오류
     WRONG_GENDER_TYPE(HttpStatus.BAD_REQUEST.value(), "Bad Request", "성별 타입은 FEMALE과 MALE만 가능합니다."),
+    // 동물 종 Type에 속하지 않는 오류
+    WRONG_SPECIES_TYPE(HttpStatus.BAD_REQUEST.value(), "Bad Request", "동물 종은 CAT과 DOG만 가능합니다."),
     // 파일을 업로드 할 수 없을 때 오류
     FILE_UPLOAD_FAILED(HttpStatus.BAD_REQUEST.value(), "Bad Request", "파일을 업로드 하는 데 실패했습니다."),
     // 파일 개수가 특정 개수를 초과했을 경우
