@@ -49,6 +49,14 @@ public class CommentService {
         return CommentDto.toDto(comment);
     }
 
+    @Transactional
+    public void deleteComment(UUID boardId, UUID commentId, Member member) {
+        validateBoardExist(boardId);
+        Comment comment = findById(commentId);
+        validateAuthor(comment, member);
+        commentRepository.delete(comment);
+    }
+
     public Comment findById(UUID id) {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(COMMENT_NOT_FOUND));

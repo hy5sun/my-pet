@@ -44,4 +44,11 @@ public class CommentController {
         CommentDto comment = commentService.editComment(boardId, commentId, req, member);
         return CustomResponse.response(HttpStatus.OK, "댓글을 정상적으로 수정했습니다.", comment);
     }
+
+    @DeleteMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse deleteComment(@PathVariable("boardId") UUID boardId, @PathVariable("commentId") UUID commentId, @Login Member member) {
+        commentService.deleteComment(boardId, commentId, member);
+        return CustomResponse.response(HttpStatus.OK, "댓글을 정상적으로 삭제했습니다.");
+    }
 }
