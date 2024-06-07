@@ -48,10 +48,4 @@ public class Image extends BaseTimeEntity {
         int pos = originalName.lastIndexOf(".");
         return originalName.substring(pos + 1);
     }
-
-    public void addBoard(Board board) {
-        if (this.board == null) {
-            this.board = board;
-        }
-    }
 }
