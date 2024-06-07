@@ -11,6 +11,7 @@ public class AllBoardsDto {
     private String title;
     private String content;
     private String thumbnail;
+    private Integer likeCount;
     private String writer;
     private Boolean isPetHelp;
 
@@ -22,17 +23,7 @@ public class AllBoardsDto {
                 board.getTitle(),
                 board.getContent(),
                 thumbnail,
-                board.getMember().getNickname(),
-                board.getIsPetHelp()
-        );
-    }
-
-    public static AllBoardsDto toDtoWithoutImage(Board board) {
-        return new AllBoardsDto(
-                board.getId().toString(),
-                board.getTitle(),
-                board.getContent(),
-                "",
+                board.getLikeCount(),
                 board.getMember().getNickname(),
                 board.getIsPetHelp()
         );
