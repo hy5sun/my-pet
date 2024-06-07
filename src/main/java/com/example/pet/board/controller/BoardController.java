@@ -56,6 +56,13 @@ public class BoardController {
         return CustomResponse.response(HttpStatus.OK, "게시물을 정상적으로 수정했습니다.", board);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse deleteBoard(@PathVariable("id") UUID boardId, @Login Member member) {
+        boardService.deleteBoard(boardId, member);
+        return CustomResponse.response(HttpStatus.OK, "게시물이 정상적으로 삭제되었습니다.");
+    }
+
     @PostMapping("/{id}/like")
     @ResponseStatus(HttpStatus.OK)
     public CustomResponse increaseLike(@PathVariable("id") UUID boardId, @Login Member member) {

@@ -137,6 +137,14 @@ public class BoardService {
         return DetailBoardResponse.toDto(board);
     }
 
+    @Transactional
+    public void deleteBoard(UUID id, Member member) {
+        Board board = getById(id);
+        validateAuthor(board, member);
+        deleteExistingFile(id);
+        boardRepository.delete(board);
+    }
+
 
     private void validateFileSize(List<MultipartFile> files) {
         if (files.size() > 3) {
