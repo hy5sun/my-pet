@@ -17,10 +17,13 @@ public class DetailBoardResponse {
     private List<ImageDto> images;
     private String writer;
     private Integer likeCount;
+    private Integer CommentCount;
     private Boolean isPetHelp;
     private LocalDateTime createdAt;
 
     public static DetailBoardResponse toDto(Board board) {
+        Integer CommentCount = board.getComments() == null ? 0 : board.getComments().size();
+
         return new DetailBoardResponse(
                 board.getId(),
                 board.getTitle(),
@@ -28,6 +31,7 @@ public class DetailBoardResponse {
                 board.getImages().stream().map(ImageDto::toDto).toList(),
                 board.getMember().getNickname(),
                 board.getLikeCount(),
+                CommentCount,
                 board.getIsPetHelp(),
                 board.getCreatedAt()
         );
