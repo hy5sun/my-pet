@@ -46,7 +46,7 @@ public class S3Service {
         }
     }
 
-    public void fileDelete(String boardId, String fileName) {
+    public void fileDelete(UUID boardId, String fileName) {
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucket + "/" + boardId, fileName));
     }
 
