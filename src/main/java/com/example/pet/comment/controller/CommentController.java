@@ -30,4 +30,11 @@ public class CommentController {
         CommentDto comment = commentService.createComment(boardId, req, member);
         return CustomResponse.response(HttpStatus.CREATED, "댓글을 정상적으로 작성했습니다.", comment);
     }
+
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public CustomResponse findAllByBoardId(@PathVariable("boardId") UUID boardId, @Login Member member) {
+        List<CommentDto> comments = commentService.findAllByBoardId(boardId);
+        return CustomResponse.response(HttpStatus.OK, "댓글을 정상적으로 조회했습니다.", comments);
+    }
 }

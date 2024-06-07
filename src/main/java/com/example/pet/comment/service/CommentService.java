@@ -12,7 +12,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.example.pet.common.exception.ErrorCode.*;
 
@@ -29,9 +31,20 @@ public class CommentService {
         return CommentDto.toDto(comment);
     }
 
+    @Transactional
+    public List<CommentDto> findAllByBoardId(UUID boardId) {
+        validateBoardExist(boardId);
+        return commentRepository.findByBoardIdOrderByCreatedAtAsc(boardId).stream()
+                .map(CommentDto::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Comment findById(UUID id) {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(COMMENT_NOT_FOUND));
     }
 
+    private void validateBoardExist(UUID boardId) {
+        boardService.getById(boardId);
+    }
 }
