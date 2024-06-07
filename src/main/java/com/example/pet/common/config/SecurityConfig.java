@@ -38,7 +38,9 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/auth/login"),
                                 new AntPathRequestMatcher("/pets"),
                                 new AntPathRequestMatcher("/pets/*"),
-                                new AntPathRequestMatcher("/items/*")
+                                new AntPathRequestMatcher("/items/*"),
+                                new AntPathRequestMatcher("/boards"),
+                                new AntPathRequestMatcher("/boards/*")
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
