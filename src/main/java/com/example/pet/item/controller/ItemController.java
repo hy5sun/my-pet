@@ -21,7 +21,7 @@ public class ItemController {
     @GetMapping("/{category}")
     @ResponseStatus(HttpStatus.OK)
     public CustomResponse findAllByCategory(@PathVariable("category") String category, @Login Member member) {
-        List<ItemDto> items = itemService.findAllByCategory(category);
-        return CustomResponse.response(HttpStatus.OK, "카테고리 별 조회를 정상적으로 했습니다.", items);
+        List<ItemDto> items = itemService.findByAllCategory(category);
+        return CustomResponse.response(HttpStatus.OK, category + " 조회를 정상적으로 했습니다.", items);
     }
 }

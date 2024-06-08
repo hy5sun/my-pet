@@ -11,4 +11,5 @@ import java.util.UUID;
 
 public interface ItemRepository extends JpaRepository<Item, UUID> {
     Optional<List<Item>> findAllByCategory(String category);
+    Optional<List<Item>> findAllByIsBestAndCategoryStartsWith(Boolean isBest, String category);
 }
