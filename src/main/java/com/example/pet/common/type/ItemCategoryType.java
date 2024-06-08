@@ -13,11 +13,13 @@ import static com.example.pet.common.exception.ErrorCode.*;
 @AllArgsConstructor
 public enum ItemCategoryType {
     DOG_FOOD("DOG_FOOD"),
-    DOG_SNACK("DOG_SNACK"),
+    DOG_SNACKS("DOG_SNACKS"),
     DOG_SUPPLIES("DOG_SUPPLIES"),
+    DOG_BEST_ITEMS("DOG_BEST_ITEMS"),
     CAT_FOOD("CAT_FOOD"),
-    CAT_SNACK("CAT_SNACK"),
-    CAT_SUPPLIES("CAT_SUPPLIES");
+    CAT_SNACKS("CAT_SNACKS"),
+    CAT_SUPPLIES("CAT_SUPPLIES"),
+    CAT_BEST_ITEMS("CAT_BEST_ITEMS");
 
     private final String value;
 
