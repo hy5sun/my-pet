@@ -32,4 +32,7 @@ public class Item extends BaseTimeEntity {
     @Column(nullable = false)
     private String category;
 
+    @Column(nullable = false)
+    private Boolean isBest;
+
 }
