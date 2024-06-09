@@ -60,7 +60,7 @@ public class AuthService {
 
         String accessToken = tokenProvider.generateToken(Duration.ofHours(12), member);
 
-        return LoginResponse.entityToDto(accessToken);
+        return LoginResponse.entityToDto(member, accessToken);
     }
 
     public Member findMemberByToken(String token) {
