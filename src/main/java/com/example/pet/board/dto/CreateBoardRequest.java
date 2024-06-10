@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,4 +24,6 @@ public class CreateBoardRequest {
     @NotNull(message = "PET HELP 여부를 선택하지 않았습니다.")
     private Boolean isPetHelp;
 
+    @NotNull(message = "이미지 URL을 입력하지 않았습니다.")
+    private List<String> imageUrl;
 }

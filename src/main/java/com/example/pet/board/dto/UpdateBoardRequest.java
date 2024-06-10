@@ -23,4 +23,7 @@ public class UpdateBoardRequest {
 
     @NotNull(message = "PET HELP 여부를 선택하지 않았습니다.")
     private Boolean isPetHelp;
+
+    @NotNull(message = "이미지 URL을 입력하지 않았습니다.")
+    private List<String> imageUrl;
 }

@@ -19,12 +19,6 @@ public class Image extends BaseTimeEntity {
     private UUID id;
 
     @Column(nullable = false)
-    private String originalName;
-
-    @Column(nullable = false)
-    private String saveName;
-
-    @Column(nullable = false)
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,19 +27,8 @@ public class Image extends BaseTimeEntity {
     private Board board;
 
     @Builder
-    public Image(String originalName) {
-        this.originalName = originalName;
-        this.saveName = createSaveName(originalName);
-    }
-
-    private String createSaveName(String originalName) {
-        String ext = extractExt(originalName);
-        String uuid = UUID.randomUUID().toString();
-        return uuid + "." + ext;
-    }
-
-    private String extractExt(String originalName) {
-        int pos = originalName.lastIndexOf(".");
-        return originalName.substring(pos + 1);
+    public Image(String imageUrl, Board board) {
+        this.imageUrl = imageUrl;
+        this.board = board;
     }
 }
