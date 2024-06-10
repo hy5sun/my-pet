@@ -1,6 +1,7 @@
 package com.example.pet.board.dto;
 
 import com.example.pet.board.domain.Board;
+import com.example.pet.board.domain.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,7 +15,7 @@ public class DetailBoardResponse {
     private UUID id;
     private String title;
     private String content;
-    private List<ImageDto> images;
+    private List<String> images;
     private String writer;
     private Integer likeCount;
     private Integer CommentCount;
@@ -28,7 +29,7 @@ public class DetailBoardResponse {
                 board.getId(),
                 board.getTitle(),
                 board.getContent(),
-                board.getImages().stream().map(ImageDto::toDto).toList(),
+                board.getImages().stream().map(Image::getImageUrl).toList(),
                 board.getMember().getNickname(),
                 board.getLikeCount(),
                 CommentCount,
