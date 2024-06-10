@@ -29,14 +29,14 @@ public class CommentService {
     public CommentDto createComment(UUID boardId, CreateCommentRequest req, Member member) {
         Board board = boardService.getById(boardId);
         Comment comment = commentRepository.save(req.toEntity(member, board));
-        return CommentDto.toDto(comment);
+        return CommentDto.toDto(comment, true);
     }
 
     @Transactional
-    public List<CommentDto> findAllByBoardId(UUID boardId) {
+    public List<CommentDto> findAllByBoardId(UUID boardId, Member member) {
         validateBoardExist(boardId);
         return commentRepository.findByBoardIdOrderByCreatedAtAsc(boardId).stream()
-                .map(CommentDto::toDto)
+                .map((Comment comment) -> CommentDto.toDto(comment, isMine(comment, member)))
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +46,7 @@ public class CommentService {
         Comment comment = findById(commentId);
         validateAuthor(comment, member);
         comment.update(req.getContent());
-        return CommentDto.toDto(comment);
+        return CommentDto.toDto(comment, isMine(comment, member));
     }
 
     @Transactional
@@ -60,6 +60,10 @@ public class CommentService {
     public Comment findById(UUID id) {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(COMMENT_NOT_FOUND));
+    }
+
+    private Boolean isMine(Comment comment, Member member) {
+        return member.equals(comment.getMember());
     }
 
     private void validateAuthor(Comment comment, Member member) {
