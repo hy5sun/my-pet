@@ -26,9 +26,8 @@ public class BoardController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomResponse create(@Validated @RequestPart("board") CreateBoardRequest req, @RequestPart(value = "files", required = false) List<MultipartFile> files, @Login Member member) throws IOException {
-        log.info("헤헤" + req.getIsPetHelp());
-        DetailBoardResponse board = boardService.createBoard(member, req, files);
+    public CustomResponse create(@Validated @RequestBody CreateBoardRequest req, @Login Member member) throws IOException {
+        DetailBoardResponse board = boardService.createBoard(member, req);
         return CustomResponse.response(HttpStatus.CREATED, "게시물을 정상적으로 작성했습니다.", board);
     }
 
@@ -50,8 +49,8 @@ public class BoardController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CustomResponse editBoard(@PathVariable("id") UUID boardId, @Validated @RequestPart("board") UpdateBoardRequest req, @RequestPart(value = "files", required = false) List<MultipartFile> files, @Login Member member) throws IOException {
-        DetailBoardResponse board = boardService.editBoard(boardId, req, files, member);
+    public CustomResponse editBoard(@PathVariable("id") UUID boardId, @Validated @RequestBody UpdateBoardRequest req, @RequestPart(value = "files", required = false) List<MultipartFile> files, @Login Member member) throws IOException {
+        DetailBoardResponse board = boardService.editBoard(boardId, req, member);
 
         return CustomResponse.response(HttpStatus.OK, "게시물을 정상적으로 수정했습니다.", board);
     }
