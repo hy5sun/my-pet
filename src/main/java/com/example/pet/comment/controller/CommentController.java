@@ -34,7 +34,7 @@ public class CommentController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public CustomResponse findAllByBoardId(@PathVariable("boardId") UUID boardId, @Login Member member) {
-        List<CommentDto> comments = commentService.findAllByBoardId(boardId);
+        List<CommentDto> comments = commentService.findAllByBoardId(boardId, member);
         return CustomResponse.response(HttpStatus.OK, "댓글을 정상적으로 조회했습니다.", comments);
     }
 
