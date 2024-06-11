@@ -35,7 +35,7 @@ public class S3Service {
         validateFileSize(files);
         ArrayList<String> urls = new ArrayList<>();
 
-        if (isFileEmpty(files)) {
+        if (files == null) {
             return FileDto.toDto(urls);
         }
 
@@ -77,7 +77,7 @@ public class S3Service {
     }
 
     private void validateFileSize(List<MultipartFile> files) {
-        if (files.size() > 3) {
+        if (files != null && files.size() > 3) {
             throw new BusinessException(TOO_MANY_FILES);
         }
     }
@@ -91,9 +91,5 @@ public class S3Service {
     private String extractExt(String originalName) {
         int pos = originalName.lastIndexOf(".");
         return originalName.substring(pos + 1);
-    }
-
-    private Boolean isFileEmpty(List<MultipartFile> files) {
-        return files.get(0).getOriginalFilename().isEmpty();
     }
 }
