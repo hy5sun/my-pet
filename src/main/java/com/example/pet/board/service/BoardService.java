@@ -55,7 +55,7 @@ public class BoardService {
 
         imageRepository.saveAll(images);
 
-        return DetailBoardResponse.toDto(board);
+        return DetailBoardResponse.toDto(board, false);
     }
 
     @Transactional
@@ -98,7 +98,7 @@ public class BoardService {
     @Transactional
     public DetailBoardResponse findById(UUID id, Member member) {
         Board board = getById(id);
-        return DetailBoardResponse.toDto(board);
+        return DetailBoardResponse.toDto(board, isLiked(board, member));
     }
 
     @Transactional
@@ -112,7 +112,7 @@ public class BoardService {
 
         imageRepository.saveAll(images);
         board.update(req.getTitle(), req.getContent(), req.getIsPetHelp(), images);
-        return DetailBoardResponse.toDto(board);
+        return DetailBoardResponse.toDto(board, isLiked(board, member));
     }
 
     @Transactional
