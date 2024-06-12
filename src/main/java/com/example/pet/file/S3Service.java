@@ -44,7 +44,7 @@ public class S3Service {
             try {
                 urls.add(uploadFile(file));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new BusinessException(FILE_UPLOAD_FAILED);
             }
         });
         return FileDto.toDto(urls);

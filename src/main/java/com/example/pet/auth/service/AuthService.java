@@ -58,7 +58,7 @@ public class AuthService {
             throw new BusinessException(WRONG_PASSWORD);
         }
 
-        String accessToken = tokenProvider.generateToken(Duration.ofHours(12), member);
+        String accessToken = tokenProvider.generateToken(Duration.ofDays(30), member);
 
         return LoginResponse.entityToDto(member, accessToken);
     }
