@@ -40,7 +40,7 @@ public class S3Service {
         }
 
         IntStream.range(0, files.size()).forEach(idx -> {
-            MultipartFile file = files.get(0);
+            MultipartFile file = files.get(idx);
             try {
                 urls.add(uploadFile(file));
             } catch (IOException e) {
