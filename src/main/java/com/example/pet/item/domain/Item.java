@@ -24,7 +24,7 @@ public class Item extends BaseTimeEntity {
     private String image_url;
 
     @Column(nullable = false)
-    private Integer price;
+    private String price;
 
     @Column(nullable = false)
     private String url;
