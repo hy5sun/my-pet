@@ -10,7 +10,7 @@ public class ItemDto {
     private String name;
     private String url ;
     private String image_url ;
-    private Integer price;
+    private String price;
     private String category;
 
     public static ItemDto toDto(Item item) {
