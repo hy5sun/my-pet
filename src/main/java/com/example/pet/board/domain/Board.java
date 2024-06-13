@@ -45,7 +45,7 @@ public class Board extends BaseTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<LikedBoard> likedBoards;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
