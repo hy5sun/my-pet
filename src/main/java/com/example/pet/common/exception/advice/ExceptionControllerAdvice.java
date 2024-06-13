@@ -90,7 +90,7 @@ public class ExceptionControllerAdvice {
      */
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<ErrorResponse> handleMultipartException(MultipartException e) {
-        log.error("MultipartException: ", e);
+        log.error("MultipartException: ", e.getMessage());
         final ErrorResponse response = ErrorResponse.of(ErrorCode.FILE_UPLOAD_FAILED);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
